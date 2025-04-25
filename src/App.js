@@ -7,51 +7,45 @@ function App() {
   const [editIndex, setEditIndex] = useState(null);
   const [editText, setEditText] = useState('');
 
-  // Add a new Todo
   const addTodo = () => {
-    if (input.trim() === '') return;
-    setTodos([...todos, input]);
-    setInput('');
+    if (input !== '') {
+      todos.push(input);
+      setTodos(todos); 
+      setInput('');
+    }
   };
 
-  // Delete a Todo
-  const removeTodo = (indexToRemove) => {
-    setTodos(todos.filter((_, index) => index !== indexToRemove));
+  const removeTodo = (index) => {
+    todos.splice(index, 1);
+    setTodos(todos); 
   };
 
-  // Edit an existing Todo
   const startEdit = (index) => {
     setEditIndex(index);
     setEditText(todos[index]);
   };
 
   const saveEdit = () => {
-    const updatedTodos = [...todos];
-    updatedTodos[editIndex] = editText;
-    setTodos(updatedTodos);
+    todos[editIndex] = editText;
+    setTodos(todos);
     setEditIndex(null);
     setEditText('');
   };
 
   return (
     <div className="App">
-      <h1>📝 My Todo List</h1>
-      
-      <div>
-        {/* Add Todo */}
-        <input
-          type="text"
-          placeholder="Add a new task..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <button onClick={addTodo}>Add</button>
-      </div>
+      <h1>My Todo List</h1>
+      <input
+        type="text"
+        placeholder="Add task"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      />
+      <button onClick={addTodo}>Add</button>
 
       <ul>
         {todos.map((todo, index) => (
           <li key={index}>
-            {/* If editing, show input box for editing */}
             {editIndex === index ? (
               <div>
                 <input
@@ -64,11 +58,8 @@ function App() {
             ) : (
               <span>{todo}</span>
             )}
-
-            {/* Delete Button */}
-            <button onClick={() => removeTodo(index)}>❌</button>
-            {/* Edit Button */}
-            <button onClick={() => startEdit(index)}>✏️</button>
+            <button onClick={() => removeTodo(index)}>Delete</button>
+            <button onClick={() => startEdit(index)}>Edit</button>
           </li>
         ))}
       </ul>
